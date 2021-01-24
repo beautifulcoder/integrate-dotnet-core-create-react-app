@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -19,6 +20,12 @@ namespace integrate_dotnet_core_create_react_app
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+          services
+            .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+              options.Cookie.HttpOnly = true;
+            });
 
             services.AddControllersWithViews();
 
@@ -45,12 +52,22 @@ namespace integrate_dotnet_core_create_react_app
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+              endpoints.MapControllerRoute(
+                  "default",
+                  "{controller=Home}/{action=Index}");
+              endpoints.MapControllerRoute(
+                "counter",
+                "/counter",
+                new { controller = "Home", action = "Index"});
+              endpoints.MapControllerRoute(
+                "fetch-data",
+                "/fetch-data",
+                new { controller = "Home", action = "Index"});
             });
 
             app.UseSpa(spa =>

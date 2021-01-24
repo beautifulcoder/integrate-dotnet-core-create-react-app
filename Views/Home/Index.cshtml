@@ -1,0 +1,26 @@
+﻿@model integrate_dotnet_core_create_react_app.CreateReactAppViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  @Html.Raw(Model.HeadContent)
+</head>
+<body>
+  <script>
+    window.SERVER_PROTOCOL = '@Context.Request.Protocol';
+    window.SERVER_SCHEME = '@Context.Request.Scheme';
+    window.SERVER_HOST = '@Context.Request.Host';
+    window.SERVER_PATH_BASE = '@Context.Request.PathBase';
+  </script>
+
+  @Html.Raw(Model.BodyContent)
+
+  <div class="container ">
+    <h2>Server-side rendering</h2>
+    <p>
+      @Context.Request.Protocol
+      @Context.Request.Scheme://@Context.Request.Host@Context.Request.PathBase
+    </p>
+  </div>
+</body>
+</html>
